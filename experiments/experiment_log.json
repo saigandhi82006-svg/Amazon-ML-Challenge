@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-09-26 16:03:03",
+  "model_type": "lightgbm",
+  "optimal_threshold": 0.74,
+  "validation_metrics": {
+    "macro_f0.5": 0.9750079360238199,
+    "macro_precision": 0.9824172886141637,
+    "macro_recall": 0.9607852678571428,
+    "total_predicted_matches": 27115,
+    "zero_prediction_s1_count": 443,
+    "singleton_s1_count": 459,
+    "correct_singleton_count": 425,
+    "total_evaluated_s1": 8000,
+    "threshold": 0.74
+  },
+  "candidate_recall_metrics": {
+    "candidate_recall": 0.36147541576544967,
+    "total_true_pairs": 138239,
+    "captured_true_pairs": 49970,
+    "avg_candidates_per_s1": 40.0,
+    "median_candidates_per_s1": 40.0,
+    "max_candidates_per_s1": 40,
+    "zero_candidate_s1_percentage": 0.0,
+    "total_candidate_pairs": 1600000
+  },
+  "features": [
+    "exact_name_match",
+    "name_token_jaccard",
+    "name_token_overlap",
+    "name_token_dice",
+    "name_char_3gram_jaccard",
+    "name_length_diff",
+    "name_length_ratio",
+    "name_prefix_match_3",
+    "name_prefix_match_5",
+    "name_char_overlap_ratio",
+    "address_token_jaccard",
+    "address_token_overlap",
+    "address_char_3gram_jaccard",
+    "address_numeric_match",
+    "address_numeric_jaccard",
+    "address_length_diff",
+    "country_exact_match",
+    "country_missing_either",
+    "is_source2",
+    "amazon_semantic_similarity"
+  ]
+}
