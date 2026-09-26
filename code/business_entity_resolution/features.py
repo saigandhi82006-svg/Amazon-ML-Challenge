@@ -1,5 +1,5 @@
 """
-Feature Engineering Module — Member 3
+Feature Engineering Module
 Extracts multi-faceted similarity features for candidate entity pairs.
 
 Feature Groups:

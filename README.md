@@ -8,11 +8,11 @@ An end-to-end, high-performance machine learning pipeline for large-scale **Busi
 1. [Challenge Overview & Objective](#challenge-overview--objective)
 2. [End-to-End Architecture](#end-to-end-architecture)
 3. [AWS AI Integration (Amazon Bedrock)](#aws-ai-integration-amazon-bedrock)
-4. [Team Division of Responsibilities](#team-division-of-responsibilities)
-   - [Member 1: Data Loading & Preprocessing](#member-1-data-loading--preprocessing)
-   - [Member 2: Candidate Generation & Multi-Strategy Blocking](#member-2-candidate-generation--multi-strategy-blocking)
-   - [Member 3: Feature Engineering & Matching Model](#member-3-feature-engineering--matching-model)
-   - [Member 4: Evaluation, Threshold Optimization & Test Inference](#member-4-evaluation-threshold-optimization--test-inference)
+4. [Pipeline Components & Methodology](#pipeline-components--methodology)
+   - [1. Data Loading & Preprocessing](#1-data-loading--preprocessing)
+   - [2. Candidate Generation & Multi-Strategy Blocking](#2-candidate-generation--multi-strategy-blocking)
+   - [3. Feature Engineering & Matching Model](#3-feature-engineering--matching-model)
+   - [4. Evaluation, Threshold Optimization & Test Inference](#4-evaluation-threshold-optimization--test-inference)
 5. [Validation & Model Performance](#validation-model-performance)
 6. [Project Structure](#project-structure)
 7. [Installation & Setup](#installation--setup)
@@ -40,7 +40,7 @@ In real-world e-commerce and business directories, records referring to the iden
                  (train/test Source 1, Source 2, Source 3)
                                       │
                                       ▼
-                        MEMBER 1: DATA PREPROCESSING
+                        PHASE 1: DATA PREPROCESSING
       • Legal suffix canonicalization (pvt/ltd/inc/corp -> full form)
       • Street / unit address standardization (st/rd/ave/ste/fl)
       • Alphanumeric token extraction & country normalization
@@ -48,7 +48,7 @@ In real-world e-commerce and business directories, records referring to the iden
                      Cleaned Data (`processed/*_clean.csv`)
                                       │
                                       ▼
-                   MEMBER 2: CANDIDATE GENERATION & BLOCKING
+                   PHASE 2: CANDIDATE GENERATION & BLOCKING
       • Multi-Strategy Inverted Indexing over 10M records
       • Strategy 1: Exact normalized business name
       • Strategy 2: Distinctive longest name tokens
@@ -59,7 +59,7 @@ In real-world e-commerce and business directories, records referring to the iden
                          High-Recall Candidate Pairs
                                       │
                                       ▼
-                   MEMBER 3: FEATURE ENGINEERING & MATCHING
+                   PHASE 3: FEATURE ENGINEERING & MATCHING
       • 20 Vectorized Similarity Features:
         - Levenshtein & Jaro-Winkler string similarity
         - Token-level Jaccard, Overlap & Cosine metrics
@@ -69,7 +69,7 @@ In real-world e-commerce and business directories, records referring to the iden
       • LightGBM Gradient Boosted Decision Tree Classifier
                                       │
                                       ▼
-                  MEMBER 4: EVALUATION & TEST INFERENCE
+                  PHASE 4: EVALUATION & TEST INFERENCE
       • Entity-Grouped 5-Fold Validation
       • Macro F0.5 Metric Optimization (Optimal threshold = 0.740)
       • Streaming Batched Inference over 1.73M Test S1 Entities
@@ -92,9 +92,9 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
 
 ---
 
-## Team Division of Responsibilities
+## Pipeline Components & Methodology
 
-### Member 1: Data Loading & Preprocessing
+### 1. Data Loading & Preprocessing
 - **Module**: `code/business_entity_resolution/preprocessing.py`
 - Implemented robust TSV loading with utf-8 encoding and tab delimiters.
 - Normalized corporate legal entities (`pvt` $\to$ `private`, `ltd` $\to$ `limited`, `corp` $\to$ `corporation`, `inc` $\to$ `incorporated`, `co` $\to$ `company`).
@@ -102,7 +102,7 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
 - Maintained 100% row preservation across all raw tables with strict validation.
 - Output clean cached datasets in `processed/` directory.
 
-### Member 2: Candidate Generation & Multi-Strategy Blocking
+### 2. Candidate Generation & Multi-Strategy Blocking
 - **Module**: `code/business_entity_resolution/candidate_generation.py`
 - Designed an ultra-fast inverted index covering ~10 Million target candidate records across Source 2 and Source 3.
 - Four-tiered indexing strategy:
@@ -112,7 +112,7 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
   4. *Address Numeric Indexing*: Matches distinct house/building numbers within identical country partitions.
 - Applied post-filtering caps (top 200 postings per key, top 8 ranked candidates per S1) reducing search space from $1.73 \times 10^{13}$ pairs to tractable, high-recall candidate sets ($>98\%$ candidate recall).
 
-### Member 3: Feature Engineering & Matching Model
+### 3. Feature Engineering & Matching Model
 - **Modules**: `code/business_entity_resolution/features.py`, `code/business_entity_resolution/matching_model.py`
 - Engineered 20 vectorized pairwise similarity features:
   - String edit distance features (Normalized Levenshtein, Jaro, Jaro-Winkler)
@@ -123,7 +123,7 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
   - Deep Semantic Embeddings (Amazon Bedrock Titan V2 cosine similarity)
 - Trained a high-capacity **LightGBM Gradient Boosted Decision Tree Classifier** with early stopping, depth regularization (`num_leaves=63`, `max_depth=8`), and balanced subsampling on 366,507 positive and hard negative pairs.
 
-### Member 4: Evaluation, Threshold Optimization & Test Inference
+### 4. Evaluation, Threshold Optimization & Test Inference
 - **Modules**: `code/business_entity_resolution/evaluate.py`, `code/business_entity_resolution/run_pipeline.py`
 - Implemented competition-exact **Macro $F_{0.5}$ metric**:
   $$F_{0.5} = \frac{(1 + 0.5^2) \cdot \text{Precision} \cdot \text{Recall}}{0.5^2 \cdot \text{Precision} + \text{Recall}} = \frac{1.25 \cdot \text{Precision} \cdot \text{Recall}}{0.25 \cdot \text{Precision} + \text{Recall}}$$
@@ -163,7 +163,7 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
 │       ├── test_source2.tsv
 │       └── test_source3.tsv
 │
-├── processed/                             # Preprocessed clean datasets (Member 1)
+├── processed/                             # Preprocessed clean datasets
 │   ├── train_source1_clean.csv
 │   ├── train_source2_clean.csv
 │   ├── train_source3_clean.csv
@@ -175,15 +175,15 @@ This solution integrates **Amazon Bedrock AI** leveraging the high-performance *
 │   └── business_entity_resolution/
 │       ├── __init__.py
 │       ├── config.py                      # Global parameters & paths
-│       ├── preprocessing.py               # Member 1: Preprocessing & cleaning
-│       ├── candidate_generation.py        # Member 2: Inverted index blocking
+│       ├── preprocessing.py               # Data preprocessing & text cleaning
+│       ├── candidate_generation.py        # Inverted index blocking & candidate generation
 │       ├── amazon_ai.py                   # AWS Bedrock Titan Embeddings V2 integration
-│       ├── features.py                    # Member 3: 20 pairwise similarity features
-│       ├── matching_model.py              # Member 3: LightGBM GBDT matching classifier
-│       ├── evaluate.py                    # Member 4: Macro F0.5 evaluator & threshold tuner
+│       ├── features.py                    # 20 pairwise similarity features
+│       ├── matching_model.py              # LightGBM GBDT matching classifier
+│       ├── evaluate.py                    # Macro F0.5 evaluator & threshold tuner
 │       └── run_pipeline.py                # End-to-end unified CLI orchestrator
 │
-├── output/                                # Generated submission outputs (Member 4)
+├── output/                                # Generated submission outputs
 │   ├── candidate_pairs.tsv                # All candidate pairs considered per S1
 │   └── matching_results.tsv               # Final resolved matches per S1 entity
 │
@@ -228,17 +228,17 @@ python -m code.business_entity_resolution.run_pipeline --stage all
 
 ### Or Run Individual Stages Modularly:
 
-1. **Stage 1: Preprocessing (Member 1)**
+1. **Stage 1: Preprocessing**
    ```bash
    python -m code.business_entity_resolution.run_pipeline --stage preprocess
    ```
 
-2. **Stage 2: Model Training & Threshold Tuning (Members 2, 3 & 4)**
+2. **Stage 2: Model Training & Threshold Tuning**
    ```bash
    python -m code.business_entity_resolution.run_pipeline --stage train
    ```
 
-3. **Stage 3: Streaming Test Inference & TSV Generation (Member 4)**
+3. **Stage 3: Streaming Test Inference & TSV Generation**
    ```bash
    python -m code.business_entity_resolution.run_pipeline --stage predict
    ```

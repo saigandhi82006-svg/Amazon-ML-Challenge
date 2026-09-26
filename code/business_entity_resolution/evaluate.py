@@ -1,5 +1,5 @@
 """
-Evaluation and Threshold Optimization Module — Member 4
+Evaluation and Threshold Optimization Module
 Calculates official competition metric (Macro F0.5 per Source 1 entity)
 and finds the optimal decision threshold.
 

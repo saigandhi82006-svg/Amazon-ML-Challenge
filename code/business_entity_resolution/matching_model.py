@@ -1,5 +1,5 @@
 """
-Matching Model Module — Member 3
+Entity Matching Model Module
 Trains and executes lightweight, explainable Gradient Boosted Decision Tree models
 for entity resolution pair classification.
 

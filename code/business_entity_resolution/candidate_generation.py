@@ -1,5 +1,5 @@
 """
-Candidate Generation and Blocking Module — Member 2
+Candidate Generation and Multi-Strategy Blocking Module
 Generates high-recall candidate pairs between Source 1 (reference) and Source 2/3 (target).
 
 Optimized multi-strategy blocking architecture:

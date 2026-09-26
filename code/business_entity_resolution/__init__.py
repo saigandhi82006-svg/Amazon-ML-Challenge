@@ -1,13 +1,14 @@
 """
 Business Entity Resolution Package
+
 Modules:
-- preprocessing: Member 1 Data Cleaning & Normalization
-- candidate_generation: Member 2 Multi-Strategy Blocking & Recall Evaluation
-- features: Member 3 Similarity Feature Engineering
-- amazon_ai: AWS Bedrock Titan Embeddings & Semantic Representation
-- matching_model: Member 3 GBDT Pair Matcher
-- evaluate: Member 4 Macro F0.5 Metric & Threshold Optimization
-- config: Central Configuration & Parameters
+- preprocessing: Data Cleaning, Tokenization & Legal Suffix Normalization
+- candidate_generation: Multi-Strategy Inverted Index Blocking & Candidate Filtering
+- features: Pairwise String, Token & Semantic Similarity Feature Engineering
+- amazon_ai: Amazon Bedrock Titan Text Embeddings & Dense Semantic Cosine Vectors
+- matching_model: Gradient Boosted Decision Tree (LightGBM) Pair Matcher
+- evaluate: Macro F0.5 Metric Computation & Threshold Optimization
+- config: Centralized Project Settings & Hyperparameters
 """
 
 from .config import (

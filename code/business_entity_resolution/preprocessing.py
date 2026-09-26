@@ -1,9 +1,7 @@
-"""Business Entity Resolution — Member 1 Preprocessing Pipeline.
+"""Business Entity Resolution — Data Loading & Preprocessing Pipeline.
 
 This module provides data loading, inspection, normalization, quality validation,
-and data persistence for the Business Entity Resolution ML Challenge.
-
-Author: Team Member 1
+and data persistence for the Business Entity Resolution pipeline.
 """
 
 import os
@@ -419,7 +417,7 @@ def validate_preprocessing(
     raw_dict: Dict[str, pd.DataFrame],
     clean_dict: Dict[str, pd.DataFrame],
 ) -> bool:
-    """Validate that preprocessing satisfied all Member 1 requirements.
+    """Validate that preprocessing satisfied all data integrity requirements.
 
     Checks:
     1. Row counts before and after are identical.
@@ -561,13 +559,13 @@ def save_processed_data(
 
 
 def run_pipeline() -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
-    """Execute the full Member 1 data loading, inspection, preprocessing, validation, and saving pipeline.
+    """Execute the full data loading, inspection, preprocessing, validation, and saving pipeline.
 
     Returns:
         Tuple of (raw_datasets_dict, clean_datasets_dict).
     """
     print("=" * 60)
-    print("MEMBER 1 - BUSINESS ENTITY RESOLUTION PREPROCESSING PIPELINE")
+    print("BUSINESS ENTITY RESOLUTION — DATA PREPROCESSING PIPELINE")
     print("=" * 60 + "\n")
     
     project_root = get_project_root()
@@ -610,7 +608,7 @@ def run_pipeline() -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
     print("Step 5: Saving processed data...")
     save_processed_data(clean_datasets)
     
-    print("\nMember 1 Preprocessing Pipeline Complete!")
+    print("\nData Preprocessing Pipeline Complete!")
     return raw_datasets, clean_datasets
 
 
