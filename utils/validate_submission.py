@@ -166,13 +166,48 @@ def validate_submission(
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Official Submission Validator — ML Challenge 2026")
+    parser.add_argument(
+        "--matching",
+        type=str,
+        default=None,
+        help="Path to matching_results.tsv",
+    )
+    parser.add_argument(
+        "--candidate",
+        type=str,
+        default=None,
+        help="Path to candidate_pairs.tsv",
+    )
+    parser.add_argument(
+        "--test-dir",
+        type=str,
+        default=None,
+        help="Path to dataset/test directory",
+    )
+    args = parser.parse_args()
+
     project_root = Path(__file__).resolve().parent.parent
-    matching_path = project_root / "output" / "matching_results.tsv"
-    cand_path = project_root / "output" / "candidate_pairs.tsv"
+    
+    if args.matching:
+        matching_path = Path(args.matching)
+    else:
+        matching_path = project_root / "output" / "matching_results.tsv"
 
-    test_s1_clean = project_root / "processed" / "test_source1_clean.csv"
-    if not test_s1_clean.exists():
-        test_s1_clean = project_root / "test" / "test_source1.tsv"
+    if args.candidate:
+        cand_path = Path(args.candidate)
+    else:
+        cand_path = project_root / "output" / "candidate_pairs.tsv"
 
-    valid = validate_submission(matching_path, cand_path, test_s1_clean)
+    if args.test_dir:
+        test_dir = Path(args.test_dir)
+        test_s1 = test_dir / "test_source1.tsv"
+    else:
+        test_s1 = project_root / "processed" / "test_source1_clean.csv"
+        if not test_s1.exists():
+            test_s1 = project_root / "dataset" / "test" / "test_source1.tsv"
+            if not test_s1.exists():
+                test_s1 = project_root / "test" / "test_source1.tsv"
+
+    valid = validate_submission(matching_path, cand_path, test_s1)
     sys.exit(0 if valid else 1)

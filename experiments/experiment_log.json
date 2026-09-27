@@ -1,39 +1,42 @@
 {
-  "timestamp": "2026-09-26 16:03:03",
+  "timestamp": "2026-09-27 18:44:56",
   "model_type": "lightgbm",
-  "optimal_threshold": 0.74,
+  "optimal_threshold": 0.72,
   "validation_metrics": {
-    "macro_f0.5": 0.9750079360238199,
-    "macro_precision": 0.9824172886141637,
-    "macro_recall": 0.9607852678571428,
-    "total_predicted_matches": 27115,
-    "zero_prediction_s1_count": 443,
+    "macro_f0.5": 0.9599885281722612,
+    "macro_precision": 0.9765123015873016,
+    "macro_recall": 0.9248785218253968,
+    "total_predicted_matches": 26072,
+    "zero_prediction_s1_count": 490,
     "singleton_s1_count": 459,
-    "correct_singleton_count": 425,
+    "correct_singleton_count": 432,
     "total_evaluated_s1": 8000,
-    "threshold": 0.74
+    "threshold": 0.72
   },
   "candidate_recall_metrics": {
-    "candidate_recall": 0.36147541576544967,
+    "candidate_recall": 0.46364629373765726,
     "total_true_pairs": 138239,
-    "captured_true_pairs": 49970,
-    "avg_candidates_per_s1": 40.0,
-    "median_candidates_per_s1": 40.0,
-    "max_candidates_per_s1": 40,
+    "captured_true_pairs": 64094,
+    "avg_candidates_per_s1": 14.9973,
+    "median_candidates_per_s1": 15.0,
+    "max_candidates_per_s1": 15,
     "zero_candidate_s1_percentage": 0.0,
-    "total_candidate_pairs": 1600000
+    "total_candidate_pairs": 599892
   },
   "features": [
     "exact_name_match",
+    "first_word_match",
     "name_token_jaccard",
     "name_token_overlap",
     "name_token_dice",
     "name_char_3gram_jaccard",
+    "name_char_4gram_jaccard",
     "name_length_diff",
     "name_length_ratio",
     "name_prefix_match_3",
     "name_prefix_match_5",
     "name_char_overlap_ratio",
+    "name_token_containment",
     "address_token_jaccard",
     "address_token_overlap",
     "address_char_3gram_jaccard",
@@ -43,6 +46,7 @@
     "country_exact_match",
     "country_missing_either",
     "is_source2",
+    "is_source3",
     "amazon_semantic_similarity"
   ]
 }
